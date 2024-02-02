@@ -1,9 +1,14 @@
 package controller;
 
+import models.Task;
 import models.User;
+import org.w3c.dom.ls.LSException;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public class TaskController {
-    private User userLogged;
+    public User userLogged;
 
     public boolean login(String username,String password){
 
@@ -24,5 +29,19 @@ public class TaskController {
     public boolean editPassword(String username,String password){
         User user=new User();
         return user.actualizar("password=? where username=?",password,username);
+    }
+
+    public boolean createTask(String title, String description, LocalDate deadLine){
+        Task task=new Task();
+        return task.insertar("(title, description, deadline, iduser) values (?,?,?,?)", title, description, deadLine, userLogged.getIduser());
+    }
+
+    public List<Task> getAllTaskByUser(){
+        Task task= new Task();
+        return task.getAllByUser(userLogged.getIduser());
+    }
+    public List<Task> getALlTask(){
+        Task task=new Task();
+        return null;
     }
 }
